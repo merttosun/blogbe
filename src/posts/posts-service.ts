@@ -20,7 +20,7 @@ export class PostsService implements IPostsService {
         { tag: 'h1', data: 'post title' },
         { tag: 'p', data: 'post paragraf' },
       ],
-      tags: ['JavaScript', 'Css', 'Html', 'Algorithms'],
+      tags: ['JavaScript', 'Css', 'Html', 'Algorithm'],
     },
     {
       id: '567',
