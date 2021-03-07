@@ -9,14 +9,15 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { BlogPost, IPostsService } from './models/posts';
+import { BlogPostSummary, IPostsService } from './models/posts';
 
 @Controller('posts')
 export class PostsController {
   constructor(
     @Inject('POSTS_SERVICE') private readonly postsService: IPostsService,
   ) {}
-  @Get('/getall')
+
+  @Get('/getPostsSummaries')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Get all posts with the page and limit',
@@ -40,13 +41,13 @@ export class PostsController {
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Server Error',
   })
-  findAll(
+  findPostsSummaries(
     @Query('page') page = 0,
     @Query('pageSize') pageSize = 10,
     @Query('searchText') searchText,
-  ): BlogPost[] {
-    console.log('findAll');
-    return this.postsService.getPosts();
+  ): BlogPostSummary[] {
+    console.log('findPostsSummaries');
+    return this.postsService.getPostsSummaries();
   }
 
   @Delete('/delete')
@@ -95,5 +96,28 @@ export class PostsController {
   })
   updatePost(@Query('post') post) {
     this.postsService.updatePost(post);
+  }
+
+  @Get('/getPostDetail')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'get post detail with given id',
+  })
+  @ApiQuery({
+    name: 'postId',
+    description: 'post id',
+    required: true,
+    example: '123',
+  })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Ok' })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Server Error',
+  })
+  getPostDetail(@Query('postId') postId) {
+    console.log('post id', postId);
+    return this.postsService.getPostDetail(postId);
   }
 }
