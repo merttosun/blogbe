@@ -9,7 +9,7 @@ export class Application {
   }
 
   async init(): Promise<void> {
-    this.application.enableCors({ origin: 'http://localhost:3000' });
+    this.application.enableCors({ origin: '*' });
     this.application.useGlobalPipes(new ValidationPipe({ transform: true }));
     this.initSwagger();
   }

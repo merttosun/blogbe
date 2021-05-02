@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Inject,
   Query,
+  Body,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { BlogPostSummary, IPostsService } from './models/posts';
@@ -77,6 +78,22 @@ export class PostsController {
   @ApiOperation({
     summary: 'Update post',
   })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Ok' })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Server Error',
+  })
+  updatePost(@Body('post') post) {
+    this.postsService.updatePost(post);
+  }
+
+  @Post('/create')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Update post',
+  })
   @ApiQuery({
     name: 'post',
     description: 'post object',
@@ -94,8 +111,9 @@ export class PostsController {
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Server Error',
   })
-  updatePost(@Query('post') post) {
-    this.postsService.updatePost(post);
+  createPost(@Body('post') post) {
+    console.log('createPost', post);
+    this.postsService.createPost(post);
   }
 
   @Get('/getPostDetail')
